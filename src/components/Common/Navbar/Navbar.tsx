@@ -3,8 +3,7 @@ import foto from '/diana.png'
 import { 
   LayoutDashboard, 
   LogOut, 
-  Menu, 
-  Settings, 
+  Menu,  
   Users, 
   X,
   ChevronRight,
@@ -12,9 +11,6 @@ import {
   Search,
   HelpCircle,
   FileText,
-  BarChart3,
-  Shield,
-  Calendar
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
