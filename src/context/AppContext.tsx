@@ -18,6 +18,9 @@ interface AppContextType {
   totalMemorandums: number;
   totalFaltas: number;
   totalPermisosPersonales: number;
+  permisoSaludCITT: number;
+  permisoSalud4Horas: number;
+  permisoSalud2Horas: number;
   totalCompensacion: number;
 }
 
@@ -77,11 +80,21 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
     return suma + registro.permisosPersonales;
   }, 0)
 
+  const permisoSaludCITT = filteredData.reduce((suma, registro) => {
+    return suma + registro.permisoSaludCITT
+  },0)
+
+  const permisoSalud4Horas = filteredData.reduce((suma, registro) => {
+    return suma + registro.permisoSalud4Horas
+  },0)
+
+  const permisoSalud2Horas = filteredData.reduce((suma, registro) => {
+    return suma + registro.permisoSalud2Horas
+  },0)
+
   const totalCompensacion = filteredData.reduce((suma, registro) => {
     return suma + registro.compensacion;
   }, 0)
-
-  
 
   const value: AppContextType = {
     data,
@@ -99,6 +112,9 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
     totalMemorandums,
     totalFaltas,
     totalPermisosPersonales,
+    permisoSaludCITT,
+    permisoSalud4Horas,
+    permisoSalud2Horas,
     totalCompensacion
   };
 

@@ -1,4 +1,4 @@
-import { Clock, Filter, Users, LayoutDashboard } from "lucide-react";
+import { Clock, Filter, LayoutDashboard, FileText, UserX, CalendarClock } from "lucide-react";
 import { useDashboard } from "../../context/AppContext";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
@@ -10,14 +10,29 @@ export const DashboardFilters = () => {
   // ✅ Configuración por ruta
   const headerConfig = {
     "/": {
-      title: "Control de Tardanzas",
-      subtitle: "Monitoreo de tardanzas, faltas y memorándums",
+      title: "Dashboard de Tardanzas",
+      subtitle: "Monitoreo de tardanzas",
       icon: LayoutDashboard,
     },
     "/permisos": {
-      title: "Gestión de Permisos",
-      subtitle: "Permisos personales, sobretiempo y compensación",
-      icon: Users,
+      title: "Dashboard de Permisos",
+      subtitle: "Monitoreo de Permisos Personales",
+      icon: Clock,
+    },
+    "/memos": {
+      title: "Dashboard de Memorándums",
+      subtitle: "Monitoreo de Memorándums",
+      icon: FileText,
+    },
+    "/faltas": {
+      title: "Dashboard de Faltas",
+      subtitle: "Monitoreo de Faltas",
+      icon: UserX,
+    },
+    "/compensacion": {
+      title: "Dashboard de Compensaciones",
+      subtitle: "Monitoreo de Compensaciones",
+      icon: CalendarClock,
     },
   } as const;
 

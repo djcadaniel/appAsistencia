@@ -12,6 +12,9 @@ export interface AsistenciaRecord {
   memorandums: number;
   faltas: number;
   permisosPersonales: number;
+  permisoSaludCITT: number;
+  permisoSalud4Horas: number;
+  permisoSalud2Horas: number;
   compensacion: number;
 }
 
@@ -19,11 +22,11 @@ export interface FilterState {
   area: string;
   anio: string;
   mes: string;
-  usuario: string
+  usuario: string;
 }
 
 export interface RouteConfig {
   path: string;
-  component:ComponentType;
-  layout: ComponentType<{children: ReactNode}>
+  component: ComponentType;
+  layout: ComponentType<{children: ReactNode}>;
 }

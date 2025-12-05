@@ -1,73 +1,61 @@
-import { Calendar } from "lucide-react";
 import { useMemo } from "react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Tooltip as PieTooltip
-} from "recharts"
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as PieTooltip } from "recharts";
+import { Calendar } from "lucide-react";
 import { useDashboard } from "../../../../context/AppContext";
 
-export const Compensacion = () => {
+export const PastelPermPersArea = () => {
   const { filteredData } = useDashboard();
 
-  const datosPieCompensacionPorArea = useMemo(() => {
-  if (!filteredData || filteredData.length === 0) return [];
+  const datosPiePermisosPersonalesPorArea = useMemo(() => {
+    if (filteredData.length === 0) return [];
 
-  const compensacionPorArea: Record<string, number> = {};
+    const permisosPorArea: Record<string, number> = {};
 
-  filteredData.forEach((r: any) => {
-    const area = (r.area ?? "SIN ÁREA").toString().trim();
+    filteredData.forEach((r) => {
+      permisosPorArea[r.area] = (permisosPorArea[r.area] || 0) + r.permisosPersonales; // Sumar permisosPersonales por área
+    });
 
-    // ✅ tu métrica real
-    const valorComp = Number(r.compensacion ?? 0);
+    const total = Object.values(permisosPorArea).reduce((s, v) => s + v, 0);
 
-    compensacionPorArea[area] =
-      (compensacionPorArea[area] || 0) + valorComp;
-  });
+    const colors = [
+      "#3b82f6", "#10b981", "#f59e0b", "#ef4444",
+      "#8b5cf6", "#06b6d4", "#f97316", "#22c55e"
+    ];
 
-  const total = Object.values(compensacionPorArea).reduce((s, v) => s + v, 0);
+    return Object.entries(permisosPorArea)
+      .map(([area, value], i) => ({
+        name: area,                // Nombre = Área
+        value,
+        percentage: total > 0 ? (value / total) * 100 : 0,  // Calcular el porcentaje
+        color: colors[i % colors.length], // Color para cada área
+      }))
+      .sort((a, b) => b.value - a.value);  // Ordenar de mayor a menor
+  }, [filteredData]);
 
-  const colors = [
-    "#3b82f6", "#10b981", "#f59e0b", "#ef4444",
-    "#8b5cf6", "#06b6d4", "#f97316", "#22c55e"
-  ];
-
-  return Object.entries(compensacionPorArea)
-    .map(([area, value], i) => ({
-      name: area,
-      value,
-      percentage: total > 0 ? (value / total) * 100 : 0,
-      color: colors[i % colors.length],
-    }))
-    .sort((a, b) => b.value - a.value);
-}, [filteredData]);
-
-
-  const totalComp = datosPieCompensacionPorArea.reduce((s, i) => s + i.value, 0);
+  const totalPermisosPersonales = datosPiePermisosPersonalesPorArea.reduce(
+    (s, i) => s + i.value, 0
+  );
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md">
       <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
         <Calendar className="w-5 h-5 text-purple-600" />
-        % de Compensación por Área
+        % de Permisos Personales por Área
       </h2>
 
-      {datosPieCompensacionPorArea.length === 0 ? (
+      {datosPiePermisosPersonalesPorArea.length === 0 ? (
         <div className="h-[400px] flex flex-col items-center justify-center text-slate-400">
           <p className="text-lg font-medium">No hay datos para mostrar</p>
           <p className="text-sm mt-1">Los datos se mostrarán aquí cuando estén disponibles</p>
         </div>
       ) : (
         <div className="h-[400px] w-full flex flex-col lg:flex-row items-center lg:items-start gap-6">
-
           {/* ===== CHART (IZQUIERDA) ===== */}
           <div className="w-full lg:w-2/3 h-[300px] lg:h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={datosPieCompensacionPorArea}
+                  data={datosPiePermisosPersonalesPorArea}
                   cx="50%"
                   cy="50%"
                   dataKey="value"
@@ -81,7 +69,7 @@ export const Compensacion = () => {
                   }}
                   style={{ fontSize: "16px", fontWeight: 600 }}
                 >
-                  {datosPieCompensacionPorArea.map((entry, index) => (
+                  {datosPiePermisosPersonalesPorArea.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={entry.color}
@@ -114,7 +102,7 @@ export const Compensacion = () => {
                     fontWeight={800}
                     dy={10}
                   >
-                    {totalComp.toLocaleString()}
+                    {totalPermisosPersonales.toLocaleString()}
                   </text>
                   <text
                     x="50%"
@@ -125,15 +113,18 @@ export const Compensacion = () => {
                     fontWeight={500}
                     dy={26}
                   >
-                    compensaciones
+                    permisos
                   </text>
                 </g>
 
                 <PieTooltip
                   formatter={(value) => {
                     const v = Number(value);
-                    const perc = totalComp > 0 ? ((v / totalComp) * 100).toFixed(1) : "0.0";
-                    return `${v} compensaciones (${perc}%)`;
+                    const perc =
+                      totalPermisosPersonales > 0
+                        ? ((v / totalPermisosPersonales) * 100).toFixed(1)
+                        : "0.0";
+                    return `${v} permisos (${perc}%)`;
                   }}
                   contentStyle={{
                     backgroundColor: "white",
@@ -150,7 +141,7 @@ export const Compensacion = () => {
           {/* ===== LEYENDA (DERECHA) ===== */}
           <div className="w-full lg:w-1/3 h-auto lg:h-[400px] overflow-y-auto pr-1">
             <div className="space-y-2">
-              {datosPieCompensacionPorArea.map((item, i) => (
+              {datosPiePermisosPersonalesPorArea.map((item, i) => (
                 <div
                   key={i}
                   className="flex items-center justify-between p-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition"
@@ -177,7 +168,6 @@ export const Compensacion = () => {
               ))}
             </div>
           </div>
-
         </div>
       )}
     </div>

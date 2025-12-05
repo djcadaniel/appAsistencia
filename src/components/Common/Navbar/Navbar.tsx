@@ -1,16 +1,18 @@
 import logo from '/logo.png'
 import foto from '/diana.png'
-import { 
-  LayoutDashboard, 
-  LogOut, 
-  Menu,  
-  Users, 
+import {
+  LayoutDashboard,
+  LogOut,
+  Menu,
   X,
   ChevronRight,
   Bell,
   Search,
   HelpCircle,
   FileText,
+  Clock,
+  UserX,
+  CalendarClock,
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -25,12 +27,11 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { to: '/', icon: LayoutDashboard, label: 'Tardanzas', badge: 3 },
-  { to: '/permisos', icon: Users, label: 'Permisos Personales y Sobretiempo', badge: 12 },
-  // { to: '/reportes', icon: BarChart3, label: 'Reportes', isNew: true },
-  // { to: '/calendario', icon: Calendar, label: 'Calendario' },
-  // { to: '/documentos', icon: FileText, label: 'Documentos' },
-  // { to: '/configuracion', icon: Settings, label: 'Configuración' },
-  // { to: '/seguridad', icon: Shield, label: 'Seguridad' }
+  { to: '/permisos', icon: Clock, label: 'Permisos', badge: 12 },
+  { to: '/memos', icon: FileText, label: 'Memorándums', badge: 12 },
+  { to: '/faltas', icon: UserX, label: 'Faltas', badge: 12 },
+  { to: '/compensacion', icon: CalendarClock, label: 'Compensación', badge: 12 },
+
 ];
 
 export const Navbar = () => {
@@ -65,9 +66,9 @@ export const Navbar = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="flex items-center space-x-2">
-          <button 
+          <button
             onClick={() => setIsSearchOpen(!isSearchOpen)}
             className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors"
           >
@@ -80,7 +81,7 @@ export const Navbar = () => {
             </span>
           </button>
           <figure className='ml-5'>
-            <img src={logo} alt="" className='w-[70px]'/>
+            <img src={logo} alt="" className='w-[70px]' />
           </figure>
         </div>
       </div>
@@ -136,7 +137,7 @@ export const Navbar = () => {
               Navegación Principal
             </h3>
           </div>
-          
+
           <div className="space-y-1 px-2">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -150,18 +151,17 @@ export const Navbar = () => {
                   className={`
                     group relative flex items-center justify-between px-4 py-3
                     transition-all duration-200 rounded-xl
-                    ${
-                      active
-                        ? 'bg-linear-to-r from-blue-500/20 to-cyan-500/10 text-blue-300 border-l-4 border-blue-500'
-                        : 'text-slate-300 hover:bg-slate-800/50 hover:text-white hover:translate-x-1'
+                    ${active
+                      ? 'bg-linear-to-r from-blue-500/20 to-cyan-500/10 text-blue-300 border-l-4 border-blue-500'
+                      : 'text-slate-300 hover:bg-slate-800/50 hover:text-white hover:translate-x-1'
                     }
                   `}
                 >
                   <div className="flex items-center">
                     <div className={`
                       w-10 h-10 rounded-lg flex items-center justify-center mr-3
-                      ${active 
-                        ? 'bg-linear-to-br from-blue-500 to-cyan-500 text-white' 
+                      ${active
+                        ? 'bg-linear-to-br from-blue-500 to-cyan-500 text-white'
                         : 'bg-slate-800/50 group-hover:bg-slate-700/50'
                       }
                     `}>
@@ -174,13 +174,13 @@ export const Navbar = () => {
                       </span>
                     )}
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     {item.badge && (
                       <span className={`
                         px-2 py-1 text-xs font-bold rounded-full min-w-6 text-center
-                        ${active 
-                          ? 'bg-white text-blue-600' 
+                        ${active
+                          ? 'bg-white text-blue-600'
                           : 'bg-blue-500/20 text-blue-300'
                         }
                       `}>
@@ -192,7 +192,7 @@ export const Navbar = () => {
                       ${active ? 'text-blue-400 rotate-90' : 'text-slate-500 group-hover:text-slate-300 group-hover:translate-x-1'}
                     `} />
                   </div>
-                  
+
                   {/* Active indicator */}
                   {active && (
                     <div className="absolute -right-2 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-blue-500 rounded-full shadow-lg shadow-blue-500/50"></div>
@@ -213,7 +213,7 @@ export const Navbar = () => {
               Acciones Rápidas
             </h3>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-2 px-2">
             <button className="flex flex-col items-center justify-center p-3 bg-slate-800/30 hover:bg-slate-800/50 rounded-xl transition-colors group">
               <div className="w-10 h-10 rounded-lg bg-linear-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
@@ -221,7 +221,7 @@ export const Navbar = () => {
               </div>
               <span className="text-xs text-slate-400 group-hover:text-white">Ayuda</span>
             </button>
-            
+
             <button className="flex flex-col items-center justify-center p-3 bg-slate-800/30 hover:bg-slate-800/50 rounded-xl transition-colors group">
               <div className="w-10 h-10 rounded-lg bg-linear-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
                 <FileText className="w-5 h-5 text-amber-400" />
@@ -253,15 +253,15 @@ export const Navbar = () => {
               </span>
             </button>
           </div>
-          
-          <button 
-            onClick={() => {/* Lógica de logout */}}
+
+          <button
+            onClick={() => {/* Lógica de logout */ }}
             className="w-full flex items-center justify-center px-4 py-3 bg-linear-to-r from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 text-slate-300 hover:text-white rounded-xl transition-all duration-200 group border border-slate-700 hover:border-slate-600"
           >
             <LogOut className="w-5 h-5 mr-3 group-hover:rotate-180 transition-transform duration-300" />
             <span className="font-medium">Cerrar Sesión</span>
           </button>
-          
+
           <div className="mt-4 text-center">
             <p className="text-xs text-slate-500">
               v2.5.1 • © 2024 Dashboard Pro
