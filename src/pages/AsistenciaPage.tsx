@@ -15,7 +15,6 @@ const DashboardContent = () => {
   
   const { filteredData } = useDashboard();
 
-
   const top5Empleados = useMemo(() => {
     return [...filteredData]
       .sort((a, b) => b.totalTarde - a.totalTarde)

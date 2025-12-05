@@ -29,12 +29,12 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard', badge: 3 },
-  { to: '/asistencia', icon: Users, label: 'Asistencia', badge: 12 },
+  { to: '/permisos', icon: Users, label: 'Asistencia', badge: 12 },
   { to: '/reportes', icon: BarChart3, label: 'Reportes', isNew: true },
   { to: '/calendario', icon: Calendar, label: 'Calendario' },
   { to: '/documentos', icon: FileText, label: 'Documentos' },
   { to: '/configuracion', icon: Settings, label: 'Configuración' },
-  { to: '/seguridad', icon: Shield, label: 'Seguridad' },
+  { to: '/seguridad', icon: Shield, label: 'Seguridad' }
 ];
 
 export const Navbar = () => {
